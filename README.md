@@ -1,16 +1,16 @@
-## candyjs-db
+## candyjs-db-mysql2
 
 database interface
 
 ## 说明
 
-尚未设计完成
+依赖 candyjs 4.6.1+
 
 此库是关系型数据库的接口层，设计该接口的目的是为了统一关系型数据库接口，使得切换数据库变得简单
 
-我们打算将数据库设计成一主多从的架构，这样既可以满足小型公司需求，也可满足大型企业级需求
+目前采用一主多从架构设计
 
-## 预想的使用方法如下 可能会随时变更
+## 预想的使用方法如下 可能会变更
 
 大致是所有查询使用 promise 返回，所有中间查询方法都是同步的
 
@@ -51,11 +51,18 @@ new CandyJs(new App({
 });
 
 
-// use
+// in some file
+const Db = require('@candyjs/db-mysql2');
+
 let command = Candy.app.db.getMain();
 // let command = Candy.app.db.getSlave();
 
 let data1 = await command.prepareSql('select * from t_category where id=1').queryAll();
 let data2 = await command.prepareStatement('select * from t_category where id=?')
     .bindValues([1]).queryOne();
+
+// use Query builder
+let q = new Db.Query(command);
+let data3 = await q.select('*').from('t_category').where('id=1').getOne();
+let data4 = await q.select('*').from('t_category').where('id=?', [2]).getOne();
 ```

@@ -75,7 +75,7 @@ export default abstract class Index extends Db {
     /**
      * 获取一个主库连接
      *
-     * @returns {Command}
+     * @returns {Command} 一个新的 Command 对象
      */
     public getMain(): Command {
         if(!this.configurations.main) {
@@ -92,7 +92,7 @@ export default abstract class Index extends Db {
     /**
      * 获取一个从库链接
      *
-     * @returns {Command}
+     * @returns {Command} 一个新的 Command 对象
      */
     public getSlave(): Command {
         if(!this.configurations.slaves) {

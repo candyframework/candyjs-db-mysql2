@@ -5,8 +5,8 @@ const AbstractQuery_1 = require("candyjs/db/AbstractQuery");
  * Mysql sql 查询生成器
  */
 class Query extends AbstractQuery_1.default {
-    constructor() {
-        super(...arguments);
+    constructor(command = null) {
+        super();
         /**
          * @property {Number} op 当前的操作类型
          */
@@ -15,15 +15,12 @@ class Query extends AbstractQuery_1.default {
          * @property {String} sqlString 要执行的 sql 语句
          */
         this.sqlString = '';
-        /**
-         * @property {any} command 数据库操作对象
-         */
-        this.command = null;
+        this.command = command;
     }
     /**
      * 生成 select
      *
-     * @return {String}
+     * @returns {String}
      */
     buildSelect() {
         let select = 'SELECT';
@@ -35,7 +32,7 @@ class Query extends AbstractQuery_1.default {
     /**
      * 生成 from
      *
-     * @return {String}
+     * @returns {String}
      */
     buildFrom() {
         if ('' === this.$from) {
@@ -46,7 +43,7 @@ class Query extends AbstractQuery_1.default {
     /**
      * 生成 where
      *
-     * @return {String}
+     * @returns {String}
      */
     buildWhere() {
         return '' === this.$where ? '' : 'WHERE ' + this.$where;
@@ -54,7 +51,7 @@ class Query extends AbstractQuery_1.default {
     /**
      * 生成 group by
      *
-     * @return {String}
+     * @returns {String}
      */
     buildGroupBy() {
         if ('' === this.$groupBy) {
@@ -65,7 +62,7 @@ class Query extends AbstractQuery_1.default {
     /**
      * 生成 having
      *
-     * @return {String}
+     * @returns {String}
      */
     buildHaving() {
         if ('' === this.$having) {
@@ -76,7 +73,7 @@ class Query extends AbstractQuery_1.default {
     /**
      * 生成 order by
      *
-     * @return {String}
+     * @returns {String}
      */
     buildOrderBy() {
         if ('' === this.$orderBy) {
@@ -87,7 +84,7 @@ class Query extends AbstractQuery_1.default {
     /**
      * 生成 limit
      *
-     * @return {String}
+     * @returns {String}
      */
     buildLimit() {
         if (!this.$options.has('limit')) {
@@ -100,7 +97,7 @@ class Query extends AbstractQuery_1.default {
     /**
      * 生成 sql 语句
      *
-     * @return {String}
+     * @returns {String}
      */
     buildSql() {
         let sql = '';
@@ -136,16 +133,16 @@ class Query extends AbstractQuery_1.default {
         return sql;
     }
     /**
-     * 获取数据库操作对象
+     * 编译 Query 对象
+     *
+     * @returns {Command}
      */
-    getCommand() {
+    buildQuery() {
+        this.command.sqlString = this.sqlString;
+        if (this.$parameters.length > 0) {
+            this.command.bindValues(this.$parameters);
+        }
         return this.command;
-    }
-    /**
-     * 设置数据库操作对象
-     */
-    setCommand(command) {
-        this.command = command;
     }
     /**
      * @inheritdoc
@@ -153,7 +150,7 @@ class Query extends AbstractQuery_1.default {
     getAll() {
         this.op = Query.OPERATE_QUERYALL;
         this.sqlString = this.buildSql();
-        return this.getCommand().buildQuery(this).queryAll();
+        return this.buildQuery().queryAll();
     }
     /**
      * @inheritdoc
@@ -161,7 +158,7 @@ class Query extends AbstractQuery_1.default {
     getOne() {
         this.op = Query.OPERATE_QUERYONE;
         this.sqlString = this.buildSql();
-        return this.getCommand().buildQuery(this).queryOne();
+        return this.buildQuery().queryOne();
     }
     /**
      * @inheritdoc
@@ -169,7 +166,7 @@ class Query extends AbstractQuery_1.default {
     getColumn() {
         this.op = Query.OPERATE_QUERYONE;
         this.sqlString = this.buildSql();
-        return this.getCommand().buildQuery(this).queryColumn();
+        return this.buildQuery().queryColumn();
     }
     /**
      * @inheritdoc
@@ -178,7 +175,7 @@ class Query extends AbstractQuery_1.default {
         this.op = Query.OPERATE_COUNT;
         this.$select = column;
         this.sqlString = this.buildSql();
-        return this.getCommand().buildQuery(this).queryColumn();
+        return this.buildQuery().queryColumn();
     }
     /**
      * @inheritdoc

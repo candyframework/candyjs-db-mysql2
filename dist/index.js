@@ -62,7 +62,7 @@ class Index extends Db_1.default {
     /**
      * 获取一个主库连接
      *
-     * @returns {Command}
+     * @returns {Command} 一个新的 Command 对象
      */
     getMain() {
         if (!this.configurations.main) {
@@ -76,7 +76,7 @@ class Index extends Db_1.default {
     /**
      * 获取一个从库链接
      *
-     * @returns {Command}
+     * @returns {Command} 一个新的 Command 对象
      */
     getSlave() {
         if (!this.configurations.slaves) {

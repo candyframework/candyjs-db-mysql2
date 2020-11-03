@@ -8,10 +8,6 @@ class Command extends AbstractCommand_1.default {
     constructor(db) {
         super();
         /**
-         * @property {any} db 数据库操作对象
-         */
-        this.db = null;
-        /**
          * @property {any[]} 待绑定的参数列表
          */
         this.bindingParameters = [];

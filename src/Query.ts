@@ -1,5 +1,7 @@
 import AbstractQuery from 'candyjs/db/AbstractQuery';
 
+import Command from './Command';
+
 /**
  * Mysql sql 查询生成器
  */
@@ -20,14 +22,20 @@ export default class Query extends AbstractQuery  {
     public sqlString: string = '';
 
     /**
-     * @property {any} command 数据库操作对象
+     * @property {Command} command 数据库操作对象
      */
-    private command: any = null;
+    private command: Command/* = null*/;
+
+    constructor(command: Command = null) {
+        super();
+
+        this.command = command;
+    }
 
     /**
      * 生成 select
      *
-     * @return {String}
+     * @returns {String}
      */
     private buildSelect(): string {
         let select = 'SELECT';
@@ -42,7 +50,7 @@ export default class Query extends AbstractQuery  {
     /**
      * 生成 from
      *
-     * @return {String}
+     * @returns {String}
      */
     private buildFrom(): string {
         if('' === this.$from) {
@@ -55,7 +63,7 @@ export default class Query extends AbstractQuery  {
     /**
      * 生成 where
      *
-     * @return {String}
+     * @returns {String}
      */
     private buildWhere(): string {
         return '' === this.$where ? '' : 'WHERE ' + this.$where;
@@ -64,7 +72,7 @@ export default class Query extends AbstractQuery  {
     /**
      * 生成 group by
      *
-     * @return {String}
+     * @returns {String}
      */
     private buildGroupBy(): string {
         if('' === this.$groupBy) {
@@ -77,7 +85,7 @@ export default class Query extends AbstractQuery  {
     /**
      * 生成 having
      *
-     * @return {String}
+     * @returns {String}
      */
     private buildHaving(): string {
         if('' === this.$having) {
@@ -90,9 +98,9 @@ export default class Query extends AbstractQuery  {
     /**
      * 生成 order by
      *
-     * @return {String}
+     * @returns {String}
      */
-    private buildOrderBy() {
+    private buildOrderBy(): string {
         if('' === this.$orderBy) {
             return '';
         }
@@ -103,9 +111,9 @@ export default class Query extends AbstractQuery  {
     /**
      * 生成 limit
      *
-     * @return {String}
+     * @returns {String}
      */
-    private buildLimit() {
+    private buildLimit(): string {
         if( !this.$options.has('limit') ) {
             return 'LIMIT 0, ' + Query.MAX_LIMIT;
         }
@@ -118,7 +126,7 @@ export default class Query extends AbstractQuery  {
     /**
      * 生成 sql 语句
      *
-     * @return {String}
+     * @returns {String}
      */
     public buildSql(): string {
         let sql = '';
@@ -160,17 +168,17 @@ export default class Query extends AbstractQuery  {
     }
 
     /**
-     * 获取数据库操作对象
+     * 编译 Query 对象
+     *
+     * @returns {Command}
      */
-    public getCommand(): any {
-        return this.command;
-    }
+    public buildQuery(): Command {
+        this.command.sqlString = this.sqlString;
+        if(this.$parameters.length > 0) {
+            this.command.bindValues(this.$parameters);
+        }
 
-    /**
-     * 设置数据库操作对象
-     */
-    public setCommand(command: any): void {
-        this.command = command;
+        return this.command;
     }
 
     /**
@@ -181,7 +189,7 @@ export default class Query extends AbstractQuery  {
 
         this.sqlString = this.buildSql();
 
-        return this.getCommand().buildQuery(this).queryAll();
+        return this.buildQuery().queryAll();
     }
 
     /**
@@ -192,7 +200,7 @@ export default class Query extends AbstractQuery  {
 
         this.sqlString = this.buildSql();
 
-        return this.getCommand().buildQuery(this).queryOne();
+        return this.buildQuery().queryOne();
     }
 
     /**
@@ -203,26 +211,26 @@ export default class Query extends AbstractQuery  {
 
         this.sqlString = this.buildSql();
 
-        return this.getCommand().buildQuery(this).queryColumn();
+        return this.buildQuery().queryColumn();
     }
 
     /**
      * @inheritdoc
      */
-    public count(column = '*'): Promise<number> {
+    public count(column: string = '*'): Promise<number> {
         this.op = Query.OPERATE_COUNT;
 
         this.$select = column;
 
         this.sqlString = this.buildSql();
 
-        return this.getCommand().buildQuery(this).queryColumn();
+        return this.buildQuery().queryColumn();
     }
 
     /**
      * @inheritdoc
      */
-    public select(columns): this {
+    public select(columns: string): this {
         this.$select = columns;
 
         return this;
@@ -231,7 +239,7 @@ export default class Query extends AbstractQuery  {
     /**
      * @inheritdoc
      */
-    public from(table): this {
+    public from(table: string): this {
         this.$from = table;
 
         return this;
@@ -240,7 +248,7 @@ export default class Query extends AbstractQuery  {
     /**
      * @inheritdoc
      */
-    public where(condition, parameters = null): this {
+    public where(condition: string, parameters: any[] = null): this {
         this.$where = condition;
 
         if(null !== parameters) {
@@ -253,7 +261,7 @@ export default class Query extends AbstractQuery  {
     /**
      * @inheritdoc
      */
-    public groupBy(column): this {
+    public groupBy(column: string): this {
         this.$groupBy = column;
 
         return this;
@@ -262,7 +270,7 @@ export default class Query extends AbstractQuery  {
     /**
      * @inheritdoc
      */
-    public having(condition): this {
+    public having(condition: string): this {
         this.$having = condition;
 
         return this;
@@ -271,7 +279,7 @@ export default class Query extends AbstractQuery  {
     /**
      * @inheritdoc
      */
-    public orderBy(columns): this {
+    public orderBy(columns: string): this {
         this.$orderBy = columns;
 
         return this;

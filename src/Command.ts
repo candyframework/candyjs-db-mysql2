@@ -5,11 +5,6 @@ import AbstractCommand from 'candyjs/db/AbstractCommand';
  */
 export default class Command extends AbstractCommand {
     /**
-     * @property {any} db 数据库操作对象
-     */
-    public db: any = null;
-
-    /**
      * @property {any[]} 待绑定的参数列表
      */
     public bindingParameters: any[] = [];
@@ -18,6 +13,11 @@ export default class Command extends AbstractCommand {
      * @property {String} sqlString
      */
     public sqlString: string = '';
+
+    /**
+     * @property {any} db 数据库操作对象
+     */
+    public db: any/* = null*/;
 
     constructor(db: any) {
         super();
