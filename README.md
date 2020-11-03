@@ -58,12 +58,15 @@ const Db = require('@candyjs/db-mysql2');
 let command = Candy.app.db.getMain();
 // let command = Candy.app.db.getSlave();
 
-let data1 = await command.prepareSql('select * from t_category where id=1').queryAll();
-let data2 = await command.prepareStatement('select * from t_category where id=?')
+let data1 = await command.prepareSql('select * from user where id=1').queryAll();
+let data2 = await command.prepareStatement('select * from user where id=?')
     .bindValues([1]).queryOne();
+
+let rs1 = await command.prepareSql('update user set age=20 where id=1').execute();
+let rs2 = await command.prepareStatement('delete from user where id=?').bindValues([1]).execute();
 
 // use Query builder
 let q = new Db.Query(command);
-let data3 = await q.select('*').from('t_category').where('id=1').getOne();
-let data4 = await q.select('*').from('t_category').where('id=?', [2]).getOne();
+let data3 = await q.select('*').from('user').where('id=1').getOne();
+let data4 = await q.select('*').from('user').where('id=?', [2]).getOne();
 ```
