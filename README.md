@@ -15,6 +15,7 @@ database interface
 大致是所有查询使用 promise 返回，所有中间查询方法都是同步的
 
 ```javascript
+// entry file
 var CandyJs = require('candyjs');
 var App = require('candyjs/web/Application');
 var Db = require('@candyjs/db-mysql2');
@@ -51,7 +52,7 @@ new CandyJs(new App({
 });
 
 
-// in some file
+// in some business file
 const Db = require('@candyjs/db-mysql2');
 
 let command = Candy.app.db.getMain();
