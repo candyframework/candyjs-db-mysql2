@@ -40,6 +40,11 @@ export default abstract class Index extends Db {
      */
     static main: any = null;
 
+    /**
+     * @property {Map<String, any>} main the current active main db
+     */
+    static slave: Map<string, any> = new Map();
+
     constructor(configurations: any) {
         super(configurations);
     }
@@ -73,6 +78,10 @@ export default abstract class Index extends Db {
      * @returns {Command}
      */
     public getMain(): Command {
+        if(!this.configurations.main) {
+            throw new Error('The main configurations are not found');
+        }
+
         if(null === Index.main) {
             Index.main = this.createConnectionPool(this.configurations.main);
         }
@@ -86,6 +95,19 @@ export default abstract class Index extends Db {
      * @returns {Command}
      */
     public getSlave(): Command {
-        return null;
+        if(!this.configurations.slaves) {
+            throw new Error('The slave configurations are not found');
+        }
+
+        let item = this.configurations.slaves[
+            Math.floor(Math.random() * this.configurations.slaves.length)
+        ];
+        let key = item.host + item.database;
+
+        if(!Index.slave.has(key)) {
+            Index.slave.set(key, this.createConnectionPool(item));
+        }
+
+        return new Command(Index.slave.get(key).promise());
     }
 }

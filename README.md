@@ -27,9 +27,24 @@ new CandyJs(new App({
             host: 'localhost',
             port: 3306,
             database: 'mydb',
-            user: 'root',
-            password: 'root'
-        }
+            user: '',
+            password: ''
+        },
+        slaves: [
+            {
+                host: 'localhost',
+                port: 3306,
+                database: 'mydb_slave1',
+                user: '',
+                password: ''
+            }, {
+                host: 'localhost',
+                port: 3306,
+                database: 'mydb_slave2',
+                user: '',
+                password: ''
+            }
+        ]
     })
 })).listen(2333, function(){
     console.log('listen on 2333');
@@ -38,6 +53,7 @@ new CandyJs(new App({
 
 // use
 let command = Candy.app.db.getMain();
+// let command = Candy.app.db.getSlave();
 
 let data1 = await command.prepareSql('select * from t_category where id=1').queryAll();
 let data2 = await command.prepareStatement('select * from t_category where id=?')
