@@ -10,6 +10,7 @@ const Command_1 = require("./Command");
  * const conf = {
  *      'main': {
  *          'host': HOST,
+ *          'port': 3306,
  *          'database': DBNAME,
  *          'user': '',
  *          'password': ''
@@ -24,6 +25,7 @@ const Command_1 = require("./Command");
  *      'id': 1,
  *      'appPath': __dirname + '/app',
  *
+ *      // register as application property
  *      'db': new Db(conf)
  * });
  *
@@ -31,7 +33,8 @@ const Command_1 = require("./Command");
  * const Candy = require('candyjs/Candy');
  *
  * let command = Candy.app.db.getMain();
- * let promise = command.prepareSql('select xx from t where id=1').queryOne();
+ * let data = await command.prepareSql('select xx from t where id=1').queryOne();
+ * let data2 = await command.prepareSql('select xx from t where id=?').bindValues([1]).queryOne();
  * ```
  */
 class Index extends Db_1.default {
