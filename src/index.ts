@@ -34,7 +34,7 @@ import Command from './Command';
  *
  * let command = Candy.app.db.getMain();
  * let data = await command.prepareSql('select xx from t where id=1').queryOne();
- * let data2 = await command.prepareSql('select xx from t where id=?').bindValues([1]).queryOne();
+ * let data2 = await command.prepareStatement('select xx from t where id=?').bindValues([1]).queryOne();
  * ```
  */
 export default abstract class Index extends Db {
