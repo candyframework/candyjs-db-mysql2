@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const mysql = require("mysql2");
-const Db_1 = require("candyjs/db/Db");
+const AbstractDb_1 = require("candyjs/db/AbstractDb");
 const Command_1 = require("./Command");
 /**
  * mysql2 数据库操作入口
  *
  * ```
+ * const Db = require('@candyjs/db-mysql2');
  * const conf = {
  *      'main': {
  *          'host': HOST,
@@ -29,7 +30,7 @@ const Command_1 = require("./Command");
  *      'db': new Db(conf)
  * });
  *
- * // some scene
+ * // in some scene
  * const Candy = require('candyjs/Candy');
  *
  * let command = Candy.app.db.getMain();
@@ -37,7 +38,7 @@ const Command_1 = require("./Command");
  * let data2 = await command.prepareStatement('select xx from t where id=?').bindValues([1]).queryOne();
  * ```
  */
-class Index extends Db_1.default {
+class Index extends AbstractDb_1.default {
     constructor(configurations) {
         super(configurations);
     }

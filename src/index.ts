@@ -1,5 +1,5 @@
-import mysql = require('mysql2');
-import Db from 'candyjs/db/Db';
+import * as mysql from 'mysql2';
+import AbstractDb from 'candyjs/db/AbstractDb';
 
 import Command from './Command';
 
@@ -7,6 +7,7 @@ import Command from './Command';
  * mysql2 数据库操作入口
  *
  * ```
+ * const Db = require('@candyjs/db-mysql2');
  * const conf = {
  *      'main': {
  *          'host': HOST,
@@ -29,7 +30,7 @@ import Command from './Command';
  *      'db': new Db(conf)
  * });
  *
- * // some scene
+ * // in some scene
  * const Candy = require('candyjs/Candy');
  *
  * let command = Candy.app.db.getMain();
@@ -37,7 +38,7 @@ import Command from './Command';
  * let data2 = await command.prepareStatement('select xx from t where id=?').bindValues([1]).queryOne();
  * ```
  */
-export default abstract class Index extends Db {
+export default class Index extends AbstractDb {
     /**
      * @property {any} main the current active main db
      */
