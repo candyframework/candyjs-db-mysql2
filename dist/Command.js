@@ -34,6 +34,12 @@ class Command extends AbstractCommand_1.default {
     /**
      * @inheritdoc
      */
+    bindValue(parameter, value) {
+        throw new Error('bindValue is not supported');
+    }
+    /**
+     * @inheritdoc
+     */
     bindValues(parameter) {
         this.bindingParameters = parameter;
         return this;
@@ -56,17 +62,24 @@ class Command extends AbstractCommand_1.default {
      * @inheritdoc
      */
     queryOne() {
-        this.trigger(AbstractCommand_1.default.EVENT_BEFORE_QUERY, this);
-        let promise = this.bindingParameters.length > 0
-            ? this.db.execute(this.sqlString, this.bindingParameters)
-            : this.db.query(this.sqlString);
-        this.bindingParameters = [];
-        return promise.then(([rows]) => {
-            this.trigger(AbstractCommand_1.default.EVENT_AFTER_QUERY, this);
+        return this.queryAll().then((rows) => {
             if (rows[0]) {
                 return rows[0];
             }
             return null;
+        });
+    }
+    /**
+     * @inheritdoc
+     */
+    queryColumn() {
+        return this.queryOne().then((row) => {
+            if (null === row) {
+                return null;
+            }
+            for (let k in row) {
+                return row[k];
+            }
         });
     }
     /**

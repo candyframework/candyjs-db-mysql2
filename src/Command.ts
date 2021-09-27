@@ -28,7 +28,7 @@ export default class Command extends AbstractCommand {
     /**
      * @inheritdoc
      */
-    public prepareSql(sql: string): this {
+    public prepareSql(sql: string): Command {
         this.sqlString = sql;
 
         return this;
@@ -37,7 +37,7 @@ export default class Command extends AbstractCommand {
     /**
      * @inheritdoc
      */
-    public prepareStatement(sql: string): this {
+    public prepareStatement(sql: string): Command {
         this.sqlString = sql;
 
         return this;
@@ -46,7 +46,14 @@ export default class Command extends AbstractCommand {
     /**
      * @inheritdoc
      */
-    public bindValues(parameter: any[]): this {
+    public bindValue(parameter: string, value: string): Command {
+        throw new Error('bindValue is not supported');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public bindValues(parameter: any[]): Command {
         this.bindingParameters = parameter;
 
         return this;
@@ -75,22 +82,27 @@ export default class Command extends AbstractCommand {
      * @inheritdoc
      */
     public queryOne(): Promise<any> {
-        this.trigger(AbstractCommand.EVENT_BEFORE_QUERY, this);
-
-        let promise = this.bindingParameters.length > 0
-            ? this.db.execute(this.sqlString, this.bindingParameters)
-            : this.db.query(this.sqlString);
-
-        this.bindingParameters = [];
-
-        return promise.then(([rows]) => {
-            this.trigger(AbstractCommand.EVENT_AFTER_QUERY, this);
-
+        return this.queryAll().then((rows) => {
             if(rows[0]) {
                 return rows[0];
             }
 
             return null;
+        });
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public queryColumn(): Promise<any> {
+        return this.queryOne().then((row) => {
+            if(null === row) {
+                return null;
+            }
+
+            for(let k in row) {
+                return row[k];
+            }
         });
     }
 

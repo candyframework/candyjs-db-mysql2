@@ -69,4 +69,5 @@ let rs2 = await command.prepareStatement('delete from user where id=?').bindValu
 let q = new Db.Query(command);
 let data3 = await q.select('*').from('user').where('id=1').getOne();
 let data4 = await q.select('*').from('user').where('id=?', [2]).getOne();
+let data5 = await q.from('user').count('id');
 ```
