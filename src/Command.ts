@@ -100,9 +100,14 @@ export default class Command extends AbstractCommand {
                 return null;
             }
 
+            let ret = undefined;
+
             for(let k in row) {
-                return row[k];
+                ret = row[k];
+                break;
             }
+
+            return ret;
         });
     }
 
