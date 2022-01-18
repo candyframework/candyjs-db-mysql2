@@ -230,7 +230,7 @@ export default class Query extends AbstractQuery  {
     /**
      * @inheritdoc
      */
-    public select(columns: string): this {
+    public select(columns: string): Query {
         this.$select = columns;
 
         return this;
@@ -239,7 +239,7 @@ export default class Query extends AbstractQuery  {
     /**
      * @inheritdoc
      */
-    public from(table: string): this {
+    public from(table: string): Query {
         this.$from = table;
 
         return this;
@@ -248,7 +248,7 @@ export default class Query extends AbstractQuery  {
     /**
      * @inheritdoc
      */
-    public where(condition: string, parameters: any[] = null): this {
+    public where(condition: string, parameters: any[] = null): Query {
         this.$where = condition;
 
         if(null !== parameters) {
@@ -261,7 +261,7 @@ export default class Query extends AbstractQuery  {
     /**
      * @inheritdoc
      */
-    public groupBy(column: string): this {
+    public groupBy(column: string): Query {
         this.$groupBy = column;
 
         return this;
@@ -270,7 +270,7 @@ export default class Query extends AbstractQuery  {
     /**
      * @inheritdoc
      */
-    public having(condition: string): this {
+    public having(condition: string): Query {
         this.$having = condition;
 
         return this;
@@ -279,7 +279,7 @@ export default class Query extends AbstractQuery  {
     /**
      * @inheritdoc
      */
-    public orderBy(columns: string): this {
+    public orderBy(columns: string): Query {
         this.$orderBy = columns;
 
         return this;
@@ -290,7 +290,7 @@ export default class Query extends AbstractQuery  {
      *
      * @param {String} limit
      */
-    public limit(limit: string): this {
+    public limit(limit: string): Query {
         this.$options.set('limit', limit);
 
         return this;
