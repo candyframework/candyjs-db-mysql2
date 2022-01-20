@@ -37,7 +37,8 @@ $ npm install @candyjs/db-mysql2
 
 `@candyjs/db-mysql2` 使用主从架构操作数据库，按照一主多从进行数据库配置。
 
-目前虽然可以实现主从配置，但是数据库 API 并不会自动进行主从切换，需要手动选择，具体用法参照使用章节。
+> 目前虽然可以实现主从配置，但是数据库 API 并不会自动进行主从切换，需要手动选择，具体用法参照使用章节。
+
 
 ```javascript
 const Db = require('@candyjs/db-mysql2');
