@@ -40,20 +40,20 @@ import Command from './Command';
  */
 export default class Index extends AbstractDb {
     /**
-     * @property {any} main the current active main db
+     * @property {mysql.Pool} main the current active main db
      */
-    static main: any = null;
+    static main: mysql.Pool = null;
 
     /**
-     * @property {Map<String, any>} main the current active main db
+     * @property {Map<String, mysql.Pool>} main the current active main db
      */
-    static slave: Map<string, any> = new Map();
+    static slave: Map<string, mysql.Pool> = new Map();
 
     constructor(configurations: any) {
         super(configurations);
     }
 
-    private createConnectionPool(configurations: any): any {
+    public createConnectionPool(configurations: any): mysql.Pool {
         return mysql.createPool(Object.assign({
             host: '',
             port: 3306,
@@ -66,7 +66,7 @@ export default class Index extends AbstractDb {
         }, configurations));
     }
 
-    private createConnection(configurations: any): any {
+    public createConnection(configurations: any): mysql.Connection {
         return mysql.createConnection(Object.assign({
             host: '',
             port: 3306,

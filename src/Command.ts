@@ -1,3 +1,5 @@
+import * as mysqlPromise from 'mysql2/promise';
+
 import AbstractCommand from 'candyjs/db/AbstractCommand';
 
 /**
@@ -15,11 +17,11 @@ export default class Command extends AbstractCommand {
     public sqlString: string = '';
 
     /**
-     * @property {any} db 数据库操作对象
+     * @property {mysqlPromise.Pool} db 数据库操作对象
      */
-    public db: any/* = null*/;
+    public db: mysqlPromise.Pool/* = null*/;
 
-    constructor(db: any) {
+    constructor(db: mysqlPromise.Pool) {
         super();
 
         this.db = db;
@@ -114,7 +116,7 @@ export default class Command extends AbstractCommand {
     /**
      * @inheritdoc
      */
-    public execute(): Promise<number> {
+    public execute(): Promise<any> {
         this.trigger(AbstractCommand.EVENT_BEFORE_EXECUTE, this);
 
         let promise = this.bindingParameters.length > 0

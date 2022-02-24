@@ -96,10 +96,10 @@ class Index extends AbstractDb_1.default {
 }
 exports.default = Index;
 /**
- * @property {any} main the current active main db
+ * @property {mysql.Pool} main the current active main db
  */
 Index.main = null;
 /**
- * @property {Map<String, any>} main the current active main db
+ * @property {Map<String, mysql.Pool>} main the current active main db
  */
 Index.slave = new Map();
