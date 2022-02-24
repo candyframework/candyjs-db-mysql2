@@ -14,6 +14,8 @@ database interface
 
     + 使用 Query builder
 
+    + 使用 Transaction
+
 + [配合 candyjs 使用](#配合 candyjs 使用)
 
 
@@ -178,7 +180,30 @@ try {
 }
 ```
 
+#### 使用 Transaction
 
+使用事务需要借助 `mysql2` 的原生 API，目前本库中对外可以获取经 promise 包装的 mysql2 api
+
+
+```
+const db = new Db(someConfigs);
+
+const internalDb = db.getMain().db;
+let conn = null;
+
+try {
+    conn = await internalDb.getConnection();
+    await conn.beginTransaction();
+
+    await conn.execute(sql1, params);
+    await conn.execute(sql2, params);
+
+    await conn.commit();
+
+} catch(e) {
+    conn && conn.rollback();
+}
+```
 
 ## 配合 candyjs 使用
 
