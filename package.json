@@ -1,6 +1,6 @@
 {
   "name": "@candyjs/db-mysql2",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "database interface",
   "main": "index.js",
   "scripts": {
