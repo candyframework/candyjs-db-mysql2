@@ -180,6 +180,9 @@ try {
 }
 ```
 
+> 注意：使用 query builder 时系统默认最大查询数量为 2333 条，可以通过 `Db.Query.MAX_LIMIT` 修改该值
+>
+
 #### 使用 Transaction
 
 使用事务需要借助 `mysql2` 的原生 API，目前本库中对外可以获取经 promise 包装的 mysql2 api
