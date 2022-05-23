@@ -85,11 +85,7 @@ export default class Command extends AbstractCommand {
      */
     public queryOne(): Promise<any> {
         return this.queryAll().then((rows) => {
-            if(rows[0]) {
-                return rows[0];
-            }
-
-            return null;
+            return rows.length > 0 ? rows[0] : null;
         });
     }
 
@@ -103,7 +99,6 @@ export default class Command extends AbstractCommand {
             }
 
             let ret = undefined;
-
             for(let k in row) {
                 ret = row[k];
                 break;

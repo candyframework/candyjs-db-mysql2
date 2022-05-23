@@ -63,10 +63,7 @@ class Command extends AbstractCommand_1.default {
      */
     queryOne() {
         return this.queryAll().then((rows) => {
-            if (rows[0]) {
-                return rows[0];
-            }
-            return null;
+            return rows.length > 0 ? rows[0] : null;
         });
     }
     /**
