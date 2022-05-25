@@ -12,6 +12,10 @@ class Query extends AbstractQuery_1.default {
          */
         this.op = -1;
         /**
+         * other sql information
+         */
+        this.$options = new Map();
+        /**
          * @property {String} sqlString 要执行的 sql 语句
          */
         this.sqlString = '';

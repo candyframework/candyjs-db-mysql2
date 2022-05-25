@@ -17,6 +17,11 @@ export default class Query extends AbstractQuery  {
     public op: number = -1;
 
     /**
+     * other sql information
+     */
+    public $options: Map<string, any> = new Map();
+
+    /**
      * @property {String} sqlString 要执行的 sql 语句
      */
     public sqlString: string = '';
