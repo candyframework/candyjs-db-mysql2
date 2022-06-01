@@ -1,6 +1,6 @@
 {
   "name": "@candyjs/db-mysql2",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "database interface",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "author": "afu",
   "license": "MIT",
-  "homepage": "https://github.com/douyu-beijing/candyjs-db-mysql2",
+  "homepage": "https://github.com/candyframework/candyjs-db-mysql2",
   "dependencies": {
     "mysql2": "^2.3.3"
   },
